@@ -1,12 +1,14 @@
-(ns clj-djl-examples.core
+(ns clj-djl-examples.train
   (:gen-class)
-  (:require [clj-djl.ndarray :as ndarray]
+  (:require [clojure.java.io :as io]
+            [clj-djl.ndarray :as ndarray]
             [clj-djl.model :as model]
             [clj-djl.model-zoo :as zoo]
             [clj-djl.training :as train]
             [clj-djl.engine :as engine]
             [clj-djl.training.dataset :as ds])
-  (:import [ai.djl.basicdataset Mnist]))
+  (:import [ai.djl.basicdataset Mnist]
+           [java.nio.file Paths]))
 
 (defn train-mnist []
   (let [mnist   ;;dataset
@@ -30,10 +32,20 @@
         (train/train-batch trainer batch)
         (train/step trainer)
         (train/close batch))
-      (train/notify-listeners trainer (fn [listner] (.onEpoch listner trainer))))))
+      (train/notify-listeners trainer (fn [listner] (.onEpoch listner trainer))))
+    model))
+
+
+(defn save-model [model path]
+  (let [nio-path (java.nio.file.Paths/get path (into-array [""]))]
+    (io/make-parents path)
+    (model/set-property model "Epoch" "1")
+    (model/save model nio-path "mlp")))
+
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (train-mnist)
-  (println "Training mnist done!"))
+  (-> (train-mnist)
+      (save-model "build/mlp"))
+  (println "model trained and saved for mnist dataset!"))

@@ -10,7 +10,11 @@ Install [leiningen](https://leiningen.org)
 
 Train MNIST dataset:
 
-    $ lein run
+    $ lein run -m clj-djl-examples.train
+
+Test with the model:
+
+    $ lein run -m clj-djl-examples.predict
 
 ## License
 
