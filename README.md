@@ -1,6 +1,6 @@
 # clj-djl-examples
 
-examples with clj-djl.
+examples with [clj-djl](https://github.com/kimim/clj-djl).
 
 ## Installation
 
