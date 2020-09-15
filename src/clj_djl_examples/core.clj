@@ -9,23 +9,23 @@
   (:import [ai.djl.basicdataset Mnist]))
 
 (defn train-mnist []
-  (let [mnist
+  (let [mnist   ;;dataset
         (-> (Mnist/builder)
             (ds/set-sampling 32 true)
             (ds/build)
             (ds/prepare (train/new-progress-bar)))
-        model
+        model   ;;model from model zoo
         (-> (model/new-instance "mlp")
             (model/set-block (zoo/mlp (* 28 28) 10 (int-array 128 64))))
-        config
+        config  ;;trainer configs
         (-> (train/softmax-cross-entropy-loss)
             (train/new-training-config)
             (train/add-evaluator (train/new-accuracy))
             (train/add-training-listeners (train/new-default-training-listeners)))
-        trainer
+        trainer  ;;trainer
         (-> (train/new-trainer model config)
             (train/initialize [(ndarray/shape 1 (* 28 28))]))]
-    (doseq [epoch (range 1)]
+    (doseq [epoch (range 1)] ;;train for 2 epoch
       (doseq [batch (train/iterate-dataset trainer mnist)]
         (train/train-batch trainer batch)
         (train/step trainer)

@@ -4,14 +4,13 @@ examples with clj-djl.
 
 ## Installation
 
-Install =leiningen=
+Install [leiningen](https://leiningen.org)
 
 ## Usage
 
 Train MNIST dataset:
 
     $ lein run
-
 
 ## License
 
