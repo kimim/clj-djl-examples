@@ -27,7 +27,7 @@
         trainer  ;;trainer
         (-> (train/new-trainer model config)
             (train/initialize [(ndarray/shape 1 (* 28 28))]))]
-    (doseq [epoch (range 1)] ;;train for 2 epoch
+    (doseq [epoch (range 3)] ;;train for 3 epoch
       (doseq [batch (train/iterate-dataset trainer mnist)]
         (train/train-batch trainer batch)
         (train/step trainer)
@@ -39,7 +39,7 @@
 (defn save-model [model path]
   (let [nio-path (java.nio.file.Paths/get path (into-array [""]))]
     (io/make-parents path)
-    (model/set-property model "Epoch" "1")
+    (model/set-property model "Epoch" "3")
     (model/save model nio-path "mlp")))
 
 
