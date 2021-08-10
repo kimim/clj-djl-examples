@@ -33,7 +33,7 @@
                                     :batchsize 256
                                     :shuffle true})))
 
-(let [[mushroom-train mushroom-test] (ds/random-split dataset [70 30])
+(let [[mushroom-train mushroom-test] (ds/random-split dataset 70 30)
       net (nn/sequential {:blocks [(nn/linear {:units 256})
                                    (nn/relu-block)
                                    (nn/linear {:units 128})
@@ -43,7 +43,7 @@
                           :initializer (nn/normal-initializer)})
       config (t/config {:loss (loss/l2-loss)
                         ;;:listeners (listener/logging)
-                        :listeners [(EvaluatorTrainingListener.) (EpochTrainingListener.) ]
+                        :listeners [(EvaluatorTrainingListener.) (EpochTrainingListener.)]
                         :evaluator (t/accuracy)
                         :optimizer (optimizer/sgd {:tracker (tracker/fixed 0.01)})})
       model (m/model {:name "linear"
